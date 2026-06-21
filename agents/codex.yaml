@@ -1,0 +1,7 @@
+name: resume-career-agent
+entry: SKILL.md
+description: Technical resume skill for code agents.
+expected_tools:
+  - filesystem
+  - python
+local_profile_policy: ignored_by_git

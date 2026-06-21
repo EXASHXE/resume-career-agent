@@ -1,0 +1,56 @@
+# Personal resume/profile data — never commit
+resources/profiles/*
+!resources/profiles/example/
+!resources/profiles/example/**
+!resources/profiles/README.md
+!resources/profiles/.gitkeep
+
+# Local privacy denylist
+.privacy-denylist.local
+privacy-denylist.local
+*.privacy.local
+
+# Local private materials
+.private/
+.local/
+private/
+local/
+personal/
+profile/
+profiles/
+resume/
+resumes/
+jd/
+jds/
+materials/
+career-assets/
+*.local.md
+*.private.md
+*.personal.md
+*.resume.md
+*.jd.txt
+*.secret
+*.key
+*.pem
+
+# Build outputs
+dist/
+build/
+*.zip
+*.pdf
+*.docx
+
+# Python
+__pycache__/
+.pytest_cache/
+.venv/
+venv/
+*.pyc
+
+# OS/editor
+.DS_Store
+.idea/
+.vscode/
+*.log
+node_modules/
+.env

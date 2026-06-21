@@ -1,0 +1,4 @@
+Role: Agent Engineer
+Must have: Python, Agent systems, RAG, Tool-Use, OpenAPI, FAISS, and evaluation.
+Required: production SSE streaming, JSON error handling, and API safety guardrails.
+Nice to have: HyDE, Reranker, and IAM integrations.

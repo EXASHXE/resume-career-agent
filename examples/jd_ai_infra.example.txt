@@ -1,0 +1,23 @@
+Role: AI Infra Engineer (Senior)
+
+About the role:
+Join our infrastructure team to build and optimize the next-generation distributed training platform. You will work on large-scale model training systems across thousands of accelerators.
+
+Must-have requirements:
+- 5+ years of experience in distributed systems or ML infrastructure
+- Strong proficiency in Python and PyTorch
+- Deep understanding of distributed training: data parallelism, tensor parallelism, pipeline parallelism
+- Experience with NCCL, collective communication primitives, and topology-aware scheduling
+- Performance profiling and memory optimization for large models
+- Experience with Megatron-LM, DeepSpeed, or similar training frameworks
+
+Nice to have:
+- Experience with CUDA kernel development or custom operators
+- Familiarity with Kubernetes and container orchestration
+- Contributions to open-source ML training frameworks
+
+What you'll do:
+- Design and implement distributed training strategies for models at 100B+ parameter scale
+- Optimize communication collectives and memory usage across heterogeneous hardware
+- Build profiling and debugging tools for distributed training workloads
+- Collaborate with researchers to productionize novel parallelism algorithms

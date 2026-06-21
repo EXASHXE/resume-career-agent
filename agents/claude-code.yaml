@@ -1,0 +1,4 @@
+name: resume-career-agent
+skill_file: SKILL.md
+description: Resume and career writing skill.
+install_hint: Copy this directory into the agent skills directory.

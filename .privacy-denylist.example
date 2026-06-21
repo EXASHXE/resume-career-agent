@@ -1,0 +1,8 @@
+# Copy this file to .privacy-denylist.local and add your own private phrases.
+# Do not commit .privacy-denylist.local.
+
+# Example fictional phrases (DO NOT USE REAL ONES HERE):
+ExampleInternalProject
+ExamplePrivateEmployer
+ExampleConfidentialPlatform
+ExampleRealResumeFileName.md

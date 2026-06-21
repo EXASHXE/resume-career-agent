@@ -1,0 +1,4 @@
+Role: CloudOps Engineer
+Required: cloud operations automation, IAM, OpenAPI integrations, observability, incident response, and read-only safety controls.
+Must understand Agent-based Tool-Use, RAG fallback, SSE, and platform APIs.
+Preferred: SRE, Kubernetes, and developer tooling experience.

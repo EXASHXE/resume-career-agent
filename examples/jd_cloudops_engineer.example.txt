@@ -1,0 +1,25 @@
+Role: CloudOps Engineer / SRE
+
+About the role:
+Our platform team manages multi-cloud infrastructure serving millions of requests per day. We need an engineer who can automate operations, improve reliability, and build internal tools.
+
+Must-have requirements:
+- 3+ years of experience in CloudOps, DevOps, or SRE roles
+- Strong experience with Kubernetes and container orchestration in production
+- Proficiency with infrastructure-as-code (Terraform, Pulumi, or similar)
+- Experience with observability stacks (Prometheus, Grafana, OpenTelemetry)
+- Understanding of CI/CD pipelines and GitOps practices
+- Scripting and automation skills (Python, Go, or Bash)
+
+Nice to have:
+- Multi-cloud experience (AWS, GCP, Azure)
+- Experience with service mesh (Istio, Linkerd)
+- Familiarity with cost optimization and FinOps practices
+- Knowledge of incident management and postmortem culture
+
+What you'll do:
+- Design and maintain multi-cloud infrastructure with high availability
+- Build internal platform tools to improve developer productivity
+- Implement observability, alerting, and incident response workflows
+- Drive reliability improvements through SLO-based engineering practices
+- Automate manual operational tasks and toil reduction

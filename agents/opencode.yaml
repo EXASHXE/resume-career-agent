@@ -1,0 +1,5 @@
+name: resume-career-agent
+description: Generic resume-career skill.
+docs:
+  - SKILL.md
+  - README.md

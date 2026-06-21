@@ -1,0 +1,15 @@
+name: resume-career-agent
+description: Privacy-safe technical resume and career skill for resume audit, JD tailoring, ATS optimization, project narrative, and interview prep.
+skill_path: .
+recommended_model: strong_reasoning
+tools_needed:
+  - file_read
+  - file_write
+  - python
+optional_tools:
+  - browser
+  - pdf_review
+default_profile: resources/profiles/example
+privacy:
+  real_profiles_are_local_only: true
+  run_privacy_guard_before_push: true

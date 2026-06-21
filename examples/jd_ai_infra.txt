@@ -1,0 +1,4 @@
+Role: AI Infra Engineer
+Required: Python, PyTorch, distributed training, Megatron-LM, profiling, and memory optimization.
+Experience with TP/PP/DP, accelerator runtimes, HCCL/NCCL, and OOM diagnosis is required.
+Preferred: NPU operator adaptation and pipeline-parallel performance modeling.

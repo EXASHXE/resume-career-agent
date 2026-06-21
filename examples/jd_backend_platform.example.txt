@@ -1,0 +1,25 @@
+Role: Backend / Platform Engineer
+
+About the role:
+Build and scale the core platform services that power our product. You will design APIs, optimize data layers, and improve developer experience across engineering teams.
+
+Must-have requirements:
+- 4+ years of backend engineering experience
+- Strong proficiency in one or more of: Python, Go, Rust, Java
+- Experience designing RESTful or gRPC APIs at scale
+- Solid understanding of relational databases, schema design, and query optimization
+- Experience with message queues (Kafka, RabbitMQ, or similar)
+- Familiarity with Docker and Kubernetes
+
+Nice to have:
+- Experience with microservice architecture and distributed systems patterns
+- Familiarity with GraphQL or event-driven architectures
+- Contributions to internal platform tools or developer productivity
+- Knowledge of authentication and authorization frameworks (OAuth, RBAC)
+
+What you'll do:
+- Design and implement core platform APIs and services
+- Optimize database performance and data access patterns
+- Build internal tools and libraries used by 50+ engineers
+- Participate in architecture reviews and design RFCs
+- Mentor junior engineers and improve engineering practices

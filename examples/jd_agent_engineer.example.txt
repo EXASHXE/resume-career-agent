@@ -1,0 +1,23 @@
+Role: Agent Engineer / LLM Application Engineer
+
+About the role:
+We are building an intelligent platform that uses LLMs and agent architectures to automate complex enterprise workflows. You will design and build the core agent orchestration system.
+
+Must-have requirements:
+- 3+ years of backend or platform engineering experience
+- Strong Python skills with production API development (FastAPI or similar)
+- Experience with Retrieval-Augmented Generation (RAG) pipelines
+- Understanding of LLM tool-use, function calling, and agent architectures
+- Experience with vector databases (FAISS, Pinecone, Milvus, or similar)
+
+Nice to have:
+- Experience with streaming protocols (SSE, WebSocket)
+- Familiarity with IAM, OAuth, or enterprise authentication systems
+- Knowledge of prompt engineering and evaluation frameworks
+- Production experience with LangChain, LlamaIndex, or similar agent frameworks
+
+What you'll do:
+- Design and implement multi-step agent workflows with tool-use capabilities
+- Build retrieval pipelines for enterprise knowledge bases
+- Create evaluation frameworks to measure agent quality and reliability
+- Collaborate with product and design to define agent behavior and user experience
