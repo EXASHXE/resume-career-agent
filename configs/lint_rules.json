@@ -1,0 +1,12 @@
+{
+  "weak_zh": ["负责", "参与", "熟悉", "了解", "优化了", "提升了"],
+  "weak_en": [
+    "responsible for", "helped with", "familiar with", "participated in",
+    "assisted with", "worked on", "involved in"
+  ],
+  "fabrication_risk": ["显著提升", "大幅降低", "极大改善", "彻底解决", "100%", "零故障"],
+  "contribution_verbs_zh": "设计|实现|构建|开发|定位|解决|交付|验证|主导|协作",
+  "contribution_verbs_en": "built|designed|implemented|developed|delivered|resolved|contributed|integrated|optimized|automated|migrated",
+  "thin_bullet_threshold": 24,
+  "item_length_limit": 240
+}

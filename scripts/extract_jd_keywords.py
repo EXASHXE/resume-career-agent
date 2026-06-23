@@ -8,72 +8,18 @@ import re
 import sys
 from pathlib import Path
 
-ALIASES = {
-    "distributed training": ["distributed training", "分布式训练"],
-    "Megatron": ["megatron", "megatron-lm"],
-    "profiling": ["profiling", "profiler", "性能分析", "性能剖析"],
-    "memory optimization": ["memory optimization", "memory management", "显存优化", "内存优化", "oom"],
-    "RAG": ["rag", "retrieval-augmented", "检索增强"],
-    "Tool-Use": ["tool-use", "tool use", "tool calling", "工具调用"],
-    "OpenAPI": ["openapi", "open api", "oas"],
-    "SSE": ["sse", "server-sent events", "流式输出"],
-    "IAM": ["iam", "identity and access management", "身份认证"],
-    "Agent": ["agent", "智能体"],
-    "PyTorch": ["pytorch", "torch"],
-    "Python": ["python"],
-    "Go": ["golang", "go"],
-    "Rust": ["rust"],
-    "Kubernetes": ["kubernetes", "k8s"],
-    "Docker": ["docker", "container"],
-    "TP": ["tensor parallel", "张量并行", "tp"],
-    "PP": ["pipeline parallel", "流水线并行", "pp"],
-    "DP": ["data parallel", "数据并行", "dp"],
-    "HCCL": ["hccl"],
-    "NCCL": ["nccl"],
-    "FAISS": ["faiss"],
-    "Kafka": ["kafka"],
-    "Redis": ["redis"],
-    "Envoy": ["envoy"],
-    "etcd": ["etcd"],
-    "OpenTelemetry": ["opentelemetry", "otel"],
-    "HyDE": ["hyde"],
-    "Reranker": ["reranker", "rerank"],
-    "DevOps": ["devops"],
-    "SRE": ["site reliability", "sre"],
-    "CloudOps": ["cloudops", "cloud operations", "云运维"],
-    "CI/CD": ["ci/cd", "continuous integration"],
-    "observability": ["observability", "可观测"],
-    "backend": ["backend", "后端"],
-    "platform engineering": ["platform engineer", "平台工程"],
-    "Terraform": ["terraform"],
-    "ArgoCD": ["argocd"],
-    "Prometheus": ["prometheus"],
-    "Grafana": ["grafana"],
-    "LangChain": ["langchain"],
-    "LlamaIndex": ["llamaindex"],
-}
+# Ensure script directory is in sys.path for _utils import
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from _utils import get_root, read_file, write_file, add_json_out_arg, output_json, load_config
 
-SOFT = {
-    "communication": ["communication", "沟通"],
-    "collaboration": ["collaboration", "协作", "teamwork"],
-    "ownership": ["ownership", "主人翁", "责任心"],
-    "problem solving": ["problem solving", "解决问题"],
-}
-
-SENIORITY = [
-    "senior", "staff", "principal", "lead", "architect",
-    "mentoring", "ownership", "年以上", "years", "5\\+", "7\\+", "10\\+",
-]
-
-RISK_SIGNALS = [
-    "\"fast[- ]paced\"", "wear many hats", "wearing many hats",
-    "ninja", "rockstar", "guru", "unicorn", "10x",
-]
-
-ROLE_PATTERNS = [
-    r"(?:job title|position|role|职位|岗位)\s*[:：]\s*([^\n]{2,80})",
-    r"^#?\s*([^\n]{2,80}(?:engineer|工程师|开发|架构师))\s*$",
-]
+# Load configuration from external JSON
+_cfg = load_config("jd_keywords.json")
+ALIASES = _cfg["aliases"]
+SOFT = _cfg["soft"]
+SENIORITY = _cfg["seniority"]
+RISK_SIGNALS = _cfg["risk_signals"]
+ROLE_PATTERNS = _cfg["role_patterns"]
+DOMAIN_SET = set(_cfg["domain_set"])
 
 
 def hits(text: str, mapping: dict[str, list[str]]) -> list[str]:
@@ -88,13 +34,13 @@ def hits(text: str, mapping: dict[str, list[str]]) -> list[str]:
     ]
 
 
-def nearby_items(text: str, markers: list[str]) -> list[str]:
+def nearby_items(text: str, markers: list[str], limit: int = 240) -> list[str]:
     result = []
     for line in text.splitlines():
         low = line.lower()
         if any(m in low for m in markers):
             item = re.sub(r"^[\s*#\-\d.)]+", "", line).strip()
-            if item and len(item) <= 240:
+            if item and len(item) <= limit:
                 result.append(item)
     return list(dict.fromkeys(result))
 
@@ -109,13 +55,7 @@ def extract(text: str) -> dict:
 
     hard = hits(text, ALIASES)
     soft = hits(text, SOFT)
-    domain = [
-        x for x in hard
-        if x in {
-            "distributed training", "RAG", "Tool-Use", "Agent",
-            "CloudOps", "DevOps", "SRE", "backend", "platform engineering",
-        }
-    ]
+    domain = [x for x in hard if x in DOMAIN_SET]
     seniority = [s for s in SENIORITY if re.search(s, text, re.I)]
     risk = [r for r in RISK_SIGNALS if re.search(r, text, re.I)]
 
@@ -134,17 +74,12 @@ def extract(text: str) -> dict:
 def main() -> None:
     p = argparse.ArgumentParser(description="Extract normalized keywords from a job description.")
     p.add_argument("jd", help="Path to JD file (text)")
-    p.add_argument("-o", "--json-out", help="Write JSON output to file")
+    add_json_out_arg(p)
     args = p.parse_args()
 
-    text = Path(args.jd).read_text(encoding="utf-8")
+    text = read_file(args.jd)
     data = extract(text)
-    payload = json.dumps(data, ensure_ascii=False, indent=2)
-
-    if args.json_out:
-        Path(args.json_out).write_text(payload + "\n", encoding="utf-8")
-    else:
-        print(payload)
+    output_json(data, json_out=args.json_out)
 
 
 if __name__ == "__main__":

@@ -7,30 +7,12 @@ import json
 import sys
 from pathlib import Path
 
-REQUIRED_SECTIONS = [
-    "## Metadata",
-    "## One-line Summary",
-    "## Problem / Context",
-    "## Technical Challenges",
-    "## Core Modules",
-    "## Key Decisions / Trade-offs",
-    "## Personal Contribution Candidates",
-    "## Technologies",
-    "## Keywords",
-    "## Resume Bullets - zh-CN",
-    "## Resume Bullets - en-US",
-    "## Interview Pitch - zh-CN",
-    "### 60 秒版",
-    "### 3 分钟版",
-    "## Interview Pitch - en-US",
-    "### 60-second version",
-    "### 3-minute version",
-    "## Likely Interview Questions",
-    "## Metrics To Confirm",
-    "## Missing Information",
-    "## Red Flags / Risks",
-    "## Evidence Source",
-]
+# Ensure script directory is in sys.path for _utils import
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from _utils import add_json_arg, load_config
+
+# Load configuration from external JSON
+REQUIRED_SECTIONS = load_config("profile_schema.json")["required_sections"]
 
 
 def validate(profile_dir: Path) -> dict:
@@ -93,7 +75,7 @@ def validate(profile_dir: Path) -> dict:
 def main() -> None:
     p = argparse.ArgumentParser(description="Validate a profile directory.")
     p.add_argument("profile_dir", help="Path to the profile directory")
-    p.add_argument("--json", action="store_true", help="Output as JSON")
+    add_json_arg(p)
     args = p.parse_args()
     result = validate(Path(args.profile_dir))
 

@@ -2,9 +2,8 @@
 """Privacy guard — scan repo for forbidden personal asset patterns.
 
 Loads:
-- Built-in forbidden path patterns (hardcoded, generic).
+- Forbidden path patterns and generic secret patterns from configs/privacy_rules.json.
 - User-specific phrases from a local denylist file (via --denylist).
-- Generic secrets/passwords/keys patterns (hardcoded, generic).
 
 Exit 0 if clean, exit 1 if violations found.
 """
@@ -17,39 +16,18 @@ import subprocess
 import sys
 from pathlib import Path
 
-SKIP_DIRS = {
-    ".git", "__pycache__", ".pytest_cache", "dist", "build",
-    "node_modules", ".mypy_cache", ".tox", ".venv", "venv",
-}
+# Ensure script directory is in sys.path for _utils import
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from _utils import get_root, add_json_arg, load_config
 
-FORBIDDEN_PATHS = [
-    "resources/profiles/default/",
-    "resources/profiles/default/projects/",
-    ".private/",
-    ".local/",
-    "private/",
-    "local/",
-    "personal/",
-    "resume/",
-    "resumes/",
-    "jd/",
-    "jds/",
-    "materials/",
-    "career-assets/",
-]
-
-GENERIC_PATTERNS = [
-    (r"(?i)(?:private[_-]?key|secret[_-]?key|api[_-]?key|access[_-]?token)\s*[:=]\s*\S{8,}", "secret/key/token pattern"),
-    (r"(?i)password\s*[:=]\s*\S{4,}", "password assignment"),
-    (r"-----BEGIN (?:\w+ )?PRIVATE KEY-----", "PEM private key"),
-    (r"(?<!\d)(?:86)?1[3-9]\d{9}(?!\d)", "phone number pattern"),
-    (r"\b\d{17}[\dXx]\b", "ID number pattern"),
-    (r"\b\d{6}\s*\d{4}\s*\d{2}\s*\d{2}\s*[\dXx]\b", "ID number pattern"),
-]
-
-EXEMPT_PATH = "resources/profiles/example/projects/"
-DENYLIST_EXAMPLE = ".privacy-denylist.example"
-DENYLIST_LOCAL = ".privacy-denylist.local"
+# Load configuration from external JSON
+_cfg = load_config("privacy_rules.json")
+SKIP_DIRS = set(_cfg["skip_dirs"])
+FORBIDDEN_PATHS = _cfg["forbidden_paths"]
+GENERIC_PATTERNS = [(p, label) for p, label in _cfg["generic_patterns"]]
+EXEMPT_PATH = _cfg["exempt_path"]
+DENYLIST_EXAMPLE = _cfg["denylist_example"]
+DENYLIST_LOCAL = _cfg["denylist_local"]
 
 
 def _is_text_file(path: Path) -> bool:
@@ -115,9 +93,9 @@ def scan(
         for fp in FORBIDDEN_PATHS:
             if rel.startswith(fp) or ("/" + fp) in ("/" + rel):
                 if tracked and rel in tracked:
-                    reason = f"forbidden path pattern (tracked)"
+                    reason = "forbidden path pattern (tracked)"
                 else:
-                    reason = f"forbidden path pattern"
+                    reason = "forbidden path pattern"
                 findings.append({
                     "path": rel,
                     "line": 0,
@@ -182,10 +160,10 @@ def main() -> None:
     parser.add_argument(
         "root",
         nargs="?",
-        default=str(Path(__file__).resolve().parents[1]),
+        default=str(get_root()),
         help="root directory to scan (default: repo root)",
     )
-    parser.add_argument("--json", action="store_true", help="Output as JSON")
+    add_json_arg(parser)
     parser.add_argument(
         "--denylist",
         default=None,

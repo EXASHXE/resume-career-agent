@@ -7,7 +7,11 @@ import subprocess
 import sys
 from pathlib import Path
 
-ROOT = Path(__file__).resolve().parents[1]
+# Ensure script directory is in sys.path for _utils import
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from _utils import get_root, read_file
+
+ROOT = get_root()
 EXAMPLE = ROOT / "resources/profiles/example"
 EXAMPLE_JD = ROOT / "examples/jd_ai_infra.example.txt"
 
@@ -21,6 +25,13 @@ def _run_py_script(script: Path, *args: str) -> int:
         if result.stderr.strip():
             print(f"    stderr: {result.stderr.strip()[:200]}")
     return result.returncode
+
+
+def _load_module(name: str, path: Path):
+    spec = importlib.util.spec_from_file_location(name, path)
+    mod = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(mod)
+    return mod
 
 
 def main() -> None:
@@ -37,12 +48,8 @@ def main() -> None:
     failures += _run_py_script(ROOT / "scripts/validate_profile.py", str(EXAMPLE))
 
     print("\n[3] Extract JD Keywords (AI Infra example)")
-    spec = importlib.util.spec_from_file_location(
-        "extract", ROOT / "scripts/extract_jd_keywords.py"
-    )
-    mod = importlib.util.module_from_spec(spec)
-    spec.loader.exec_module(mod)
-    text = EXAMPLE_JD.read_text(encoding="utf-8")
+    mod = _load_module("extract", ROOT / "scripts/extract_jd_keywords.py")
+    text = read_file(EXAMPLE_JD)
     data = mod.extract(text)
     if data.get("hard_skills"):
         print(f"  [PASS] extract_jd_keywords.py — {len(data['hard_skills'])} hard skills found")
@@ -51,11 +58,7 @@ def main() -> None:
         failures += 1
 
     print("\n[4] Score Project Match")
-    spec2 = importlib.util.spec_from_file_location(
-        "score", ROOT / "scripts/score_project_match.py"
-    )
-    mod2 = importlib.util.module_from_spec(spec2)
-    spec2.loader.exec_module(mod2)
+    mod2 = _load_module("score", ROOT / "scripts/score_project_match.py")
     results = mod2.score_projects(data, EXAMPLE / "projects")
     if results:
         top = results[0]
@@ -65,9 +68,7 @@ def main() -> None:
         failures += 1
 
     print("\n[5] Lint Resume (test string)")
-    spec3 = importlib.util.spec_from_file_location("lint", ROOT / "scripts/lint_resume.py")
-    mod3 = importlib.util.module_from_spec(spec3)
-    spec3.loader.exec_module(mod3)
+    mod3 = _load_module("lint", ROOT / "scripts/lint_resume.py")
     warnings = mod3.lint("## 项目经历\n- 负责项目，熟悉 Python，优化了系统")
     if warnings:
         print(f"  [PASS] lint_resume.py — {len(warnings)} warning(s) found (expected)")
@@ -77,13 +78,7 @@ def main() -> None:
 
     print("\n[6] Package Skill (dry-run verify)")
     try:
-        mod4_name = "package_skill"
-        spec4 = importlib.util.spec_from_file_location(
-            mod4_name, ROOT / "scripts/package_skill.py"
-        )
-        mod4 = importlib.util.module_from_spec(spec4)
-        spec4.loader.exec_module(mod4)
-        # Just verify the module loads and has required function
+        mod4 = _load_module("package", ROOT / "scripts/package_skill.py")
         if hasattr(mod4, "main") or hasattr(mod4, "create_zip"):
             print("  [PASS] package_skill.py — module loaded")
         else:

@@ -43,7 +43,14 @@ resume-career-agent/
   agents/                   # Agent-platform specific metadata
     openai.yaml, codex.yaml, claude-code.yaml, opencode.yaml
 
+  configs/                  # Externalized configuration (JSON)
+    jd_keywords.json        # JD keyword aliases, soft skills, seniority signals
+    lint_rules.json         # Weak expressions, fabrication risk patterns
+    privacy_rules.json      # Forbidden paths, generic secret patterns
+    profile_schema.json     # Required project asset sections
+
   references/               # Rubrics, checklists, and methodology
+    INDEX.md                # Reference index and routing guide
     audit-checklist.md, red-flags.md, narrative-tools.md
     jd-keyword-map.md, ats-checklist.md, one-page-resume.md
     tech-resume-rubric.md, ai-infra-resume-rubric.md
@@ -63,6 +70,7 @@ resume-career-agent/
     missing_info_checklist.md, interview_prep_pack.md
 
   scripts/                  # Deterministic Python tools
+    _utils.py               # Shared utilities (path, I/O, CLI, config)
     privacy_guard.py        # Scan for privacy violations
     init_private_profile.py # Create local gitignored profile
     validate_profile.py     # Check profile completeness

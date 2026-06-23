@@ -8,6 +8,10 @@ import re
 import sys
 from pathlib import Path
 
+# Ensure script directory is in sys.path for _utils import
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from _utils import read_file, add_json_arg, add_json_out_arg, output_json
+
 
 def tokens(value):
     if isinstance(value, list):
@@ -67,18 +71,13 @@ def main() -> None:
     p = argparse.ArgumentParser(description="Score project assets against JD keywords.")
     p.add_argument("keywords_json", help="Path to JD keywords JSON")
     p.add_argument("projects_dir", help="Path to projects directory")
-    p.add_argument("-o", "--json-out", help="Write JSON output to file")
-    p.add_argument("--json", action="store_true", help="Print as JSON to stdout")
+    add_json_out_arg(p)
+    add_json_arg(p)
     args = p.parse_args()
 
-    data = json.loads(Path(args.keywords_json).read_text(encoding="utf-8"))
+    data = json.loads(read_file(args.keywords_json))
     result = score_projects(data, Path(args.projects_dir))
-    payload = json.dumps(result, ensure_ascii=False, indent=2)
-
-    if args.json_out:
-        Path(args.json_out).write_text(payload + "\n", encoding="utf-8")
-    else:
-        print(payload)
+    output_json(result, json_out=args.json_out)
 
 
 if __name__ == "__main__":

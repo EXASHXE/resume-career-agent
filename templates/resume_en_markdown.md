@@ -57,7 +57,7 @@
 
 ---
 
-> **Bullet rules**: Every bullet follows `Action verb + Technical artifact + Result/impact`. For missing metrics, use `[TODO: metric]` placeholders. Do not deliver without filling.
-> **One-page rules**: 2-3 max bullets per role; no more than 3 projects.
+> **Bullet rules**: Every bullet follows `Action verb + Technical artifact + Result/impact`. For missing metrics, use `[TODO / 待补：metric — description]` placeholders. Do not deliver without filling.
+> **One-page rules**: 2-3 max bullets per role; no more than 3 projects; 2-3 bullets per project.
 > **Verb ownership**: Use "Built", "Designed", "Implemented" only when evidence supports individual contribution. Otherwise "Contributed to", "Implemented part of".
 > **ATS**: Use standard section headers; avoid creative/custom section names.

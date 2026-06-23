@@ -7,13 +7,16 @@ Excludes: .git, caches, dist, build, venvs, private profile data.
 from __future__ import annotations
 
 import argparse
-import importlib.util
 import subprocess
 import sys
 import zipfile
 from pathlib import Path
 
-ROOT = Path(__file__).resolve().parents[1]
+# Ensure script directory is in sys.path for _utils import
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from _utils import get_root
+
+ROOT = get_root()
 DIST = ROOT / "dist"
 
 EXCLUDE_DIRS = {

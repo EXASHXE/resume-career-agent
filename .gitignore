@@ -17,7 +17,7 @@ private/
 local/
 personal/
 profile/
-profiles/
+# profiles/ is handled by resources/profiles/* above (with example/ exception)
 resume/
 resumes/
 jd/

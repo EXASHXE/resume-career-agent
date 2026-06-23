@@ -1,8 +1,46 @@
-<!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><title>{{name}} - {{target_role}}</title><style>@page{size:A4;margin:12mm}*{box-sizing:border-box}body{font:10.5pt/1.38 Arial,"Noto Sans CJK SC",sans-serif;color:#172033;margin:0}h1{font-size:22pt;margin:0}h2{font-size:12pt;border-bottom:1px solid #334155;margin:10px 0 4px}h3{font-size:10.5pt;margin:6px 0 2px}.meta,.muted{color:#475569}.row{display:flex;justify-content:space-between;gap:12px}ul{margin:2px 0 5px;padding-left:18px}li{margin:1px 0}a{color:inherit}</style></head><body>
-<header><h1>{{name}}</h1><div class="meta">{{target_role}} · {{location}} · {{phone}} · {{email}} · {{links}}</div></header>
-<section><h2>职业概述</h2><p>{{summary}}</p></section>
-<section><h2>核心技能</h2><p>{{skills}}</p></section>
-<section><h2>工作经历</h2>{{experience_html}}</section>
-<section><h2>项目经历</h2>{{projects_html}}</section>
-<section><h2>教育经历</h2>{{education_html}}</section>
-</body></html>
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<title>{{name}} - {{target_role}}</title>
+<style>
+@page { size: A4; margin: 12mm }
+* { box-sizing: border-box }
+body { font: 10.5pt/1.38 Arial, "Noto Sans CJK SC", sans-serif; color: #172033; margin: 0 }
+h1 { font-size: 22pt; margin: 0 }
+h2 { font-size: 12pt; border-bottom: 1px solid #334155; margin: 10px 0 4px }
+h3 { font-size: 10.5pt; margin: 6px 0 2px }
+.meta, .muted { color: #475569 }
+.row { display: flex; justify-content: space-between; gap: 12px }
+ul { margin: 2px 0 5px; padding-left: 18px }
+li { margin: 1px 0 }
+a { color: inherit }
+</style>
+</head>
+<body>
+<header>
+  <h1>{{name}}</h1>
+  <div class="meta">{{target_role}} · {{location}} · {{phone}} · {{email}} · {{links}}</div>
+</header>
+<section>
+  <h2>职业概述</h2>
+  <p>{{summary}}</p>
+</section>
+<section>
+  <h2>核心技能</h2>
+  <p>{{skills}}</p>
+</section>
+<section>
+  <h2>工作经历</h2>
+  {{experience_html}}
+</section>
+<section>
+  <h2>项目经历</h2>
+  {{projects_html}}
+</section>
+<section>
+  <h2>教育经历</h2>
+  {{education_html}}
+</section>
+</body>
+</html>

@@ -1,9 +1,11 @@
 import importlib.util
+import sys
 import tempfile
 import zipfile
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(ROOT / "scripts"))
 spec = importlib.util.spec_from_file_location("package", ROOT / "scripts/package_skill.py")
 mod = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(mod)

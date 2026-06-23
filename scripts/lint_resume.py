@@ -8,12 +8,18 @@ import re
 import sys
 from pathlib import Path
 
-WEAK_ZH = ["负责", "参与", "熟悉", "了解", "优化了", "提升了"]
-WEAK_EN = [
-    "responsible for", "helped with", "familiar with", "participated in",
-    "assisted with", "worked on", "involved in",
-]
-FABRICATION_RISK = ["显著提升", "大幅降低", "极大改善", "彻底解决", "100%", "零故障"]
+# Ensure script directory is in sys.path for _utils import
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from _utils import read_file, add_json_arg, load_config
+
+# Load configuration from external JSON
+_cfg = load_config("lint_rules.json")
+WEAK_ZH = _cfg["weak_zh"]
+WEAK_EN = _cfg["weak_en"]
+FABRICATION_RISK = _cfg["fabrication_risk"]
+CONTRIBUTION_VERBS_ZH = _cfg["contribution_verbs_zh"]
+CONTRIBUTION_VERBS_EN = _cfg["contribution_verbs_en"]
+THIN_BULLET_THRESHOLD = _cfg["thin_bullet_threshold"]
 
 
 def lint(text: str) -> list[dict]:
@@ -48,16 +54,14 @@ def lint(text: str) -> list[dict]:
                     "message": "bullet 缺少数字或明确的指标待补占位符。",
                 })
             if not re.search(
-                r"设计|实现|构建|开发|定位|解决|交付|验证|主导|协作|"
-                r"built|designed|implemented|developed|delivered|resolved|"
-                r"contributed|integrated|optimized|automated|migrated",
+                rf"{CONTRIBUTION_VERBS_ZH}|{CONTRIBUTION_VERBS_EN}",
                 line, re.I,
             ):
                 warnings.append({
                     "line": n, "code": "missing-contribution",
                     "message": "个人动作或贡献边界不清。",
                 })
-            if len(stripped) < 24:
+            if len(stripped) < THIN_BULLET_THRESHOLD:
                 warnings.append({
                     "line": n, "code": "thin-bullet",
                     "message": "bullet 可能缺少问题背景、工程产物或结果。",
@@ -73,11 +77,11 @@ def lint(text: str) -> list[dict]:
 def main() -> None:
     p = argparse.ArgumentParser(description="Lint resume for weak language and missing evidence.")
     p.add_argument("resume", help="Path to resume file (Markdown)")
-    p.add_argument("--json", action="store_true", help="Output as JSON")
+    add_json_arg(p)
     p.add_argument("--fail-on-warning", action="store_true", help="Exit 1 if any warnings found")
     args = p.parse_args()
 
-    text = Path(args.resume).read_text(encoding="utf-8")
+    text = read_file(args.resume)
     ws = lint(text)
 
     if args.json:

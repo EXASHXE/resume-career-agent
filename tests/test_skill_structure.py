@@ -40,6 +40,13 @@ def test_core_structure():
             "score_project_match.py", "lint_resume.py",
             "render_pdf.py", "pdf_page_count.py", "pdf_to_images.py",
             "render_docx.py", "package_skill.py", "smoke_check.py",
+            "_utils.py",
+        ]
+    ]
+    required += [
+        f"configs/{x}" for x in [
+            "jd_keywords.json", "lint_rules.json",
+            "privacy_rules.json", "profile_schema.json",
         ]
     ]
     assert not [p for p in required if not (ROOT / p).is_file()]

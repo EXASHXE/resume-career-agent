@@ -11,7 +11,11 @@ import shutil
 import sys
 from pathlib import Path
 
-ROOT = Path(__file__).resolve().parents[1]
+# Ensure script directory is in sys.path for _utils import
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from _utils import get_root
+
+ROOT = get_root()
 EXAMPLE = ROOT / "resources/profiles/example"
 PROFILES = ROOT / "resources/profiles"
 
@@ -24,18 +28,15 @@ def init_profile(name: str, force: bool = False) -> Path:
             sys.exit(1)
         shutil.rmtree(target)
 
+    if not EXAMPLE.exists():
+        print(f"Error: example profile not found at {EXAMPLE}")
+        sys.exit(1)
+
     shutil.copytree(EXAMPLE, target)
 
     for f in target.rglob("*.example.md"):
         new_name = f.name.replace(".example", "")
-        new_path = f.with_name(new_name)
-        f.rename(new_path)
-
-    for d in list(target.rglob("*")):
-        if d.is_dir() and d.name == "projects":
-            for pf in d.rglob("*.example.md"):
-                new_name = pf.name.replace(".example", "")
-                pf.rename(pf.with_name(new_name))
+        f.rename(f.with_name(new_name))
 
     print(f"Private profile created: {target}")
     print()
